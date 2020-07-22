@@ -1,0 +1,68 @@
+﻿@using System.IO
+@model MoviesCatalog.ViewModels.IndexMovieViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+    <p>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <a asp-action="Create">Create New </a>
+            <img src="~/images/add.png" height="30" width="30" />
+        }
+    </p>
+
+<div class="row">
+    @if (Model.Movies.Count() > 0)
+    {
+        @foreach (var item in Model.Movies)
+        {
+            <div class="col-md-4 col-lg-3 col-sm-6 mb-5 custom-style-for-card-div">
+                <div class="card">
+                    <div class="img-container">
+                        @if (File.Exists($"wwwroot/{item.Poster}"))
+                        {
+                            <div class="img-blur" style="background-image: url(@item.Poster"></div>
+                            <img class="card-img-top custom-style-for-card-img" src="@item.Poster" alt="Poster">
+                        }
+                        else
+                        {
+                            <div class="img-blur" style="background-image: url(/images/film-poster-placeholder.png)"></div>
+                            <img class="card-img-top custom-style-for-card-img" src="~/images/film-poster-placeholder.png" alt="Poster">
+                        }
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Title</h5>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Details</a>
+                        @if (User.Identity.IsAuthenticated && ViewBag.LoggedUserId == item.IdentityUserId)
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.Id">
+                                <img src="~/images/edit.png" height="30" width="30"/>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.Id">
+                                <img src="~/images/delete.png" height="30" width="30" />
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+<div class="col-md-12 col-lg-12 text-center">
+    <h3>Movies not found!</h3>
+    <img src="~/images/cinema.png" width="50" height="50" style="object-fit:cover;"/>
+</div>
+    }
+
+
+</div>
+
+<vc:pagination total-pages="@Model.TotalPages"
+               current-page="@Model.CurrentPage"
+               controller="Movies"
+               action="Index">
+</vc:pagination>
+

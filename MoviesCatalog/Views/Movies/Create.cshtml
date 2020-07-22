@@ -1,0 +1,56 @@
+﻿@model MoviesCatalog.ViewModels.MovieViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Movie</h4>
+<hr />
+
+@if (TempData.ContainsKey("FileUploadError"))
+{
+    <p class="text-danger">@TempData["FileUploadError"]</p>
+}
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Title" class="control-label"></label>
+        <input asp-for="Title" class="form-control form-input" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description" class="control-label"></label>
+        <textarea asp-for="Description" class="form-control form-input"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Year" class="control-label"></label>
+        <input asp-for="Year" class="form-control form-input" />
+        <span asp-validation-for="Year" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Upload image from computer</label>
+        <h6>Allowed file extensions: jpg, jpeg, png. Allowed file size: 10 MB</h6>
+        <input type="file" placeholder="Choose file" asp-for="ImageFile" id="file" />
+        <br />
+        <span asp-validation-for="ImageFile" class="text-danger" id="fileValidationSpan"></span>
+    </div>
+    <div class="form-group">
+        <input asp-for="IdentityUserId" type="hidden" class="form-control" value="@ViewBag.LoggedUserId" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" id="submit-btn"/>
+    </div>
+</form>
+<div>
+    <a href="@ViewBag.returnUrl">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+

@@ -1,0 +1,75 @@
+﻿@using System.IO
+@model MoviesCatalog.ViewModels.EditViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Movie</h4>
+<hr />
+
+
+@if (TempData.ContainsKey("FileUploadError"))
+{
+    <p class="text-danger">@TempData["FileUploadError"]</p>
+}
+
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label asp-for="Title" class="control-label"></label>
+        <input asp-for="Title" class="form-control form-input" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description" class="control-label"></label>
+        <input asp-for="Description" class="form-control form-input" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Year" class="control-label"></label>
+        <input asp-for="Year" class="form-control form-input" />
+        <span asp-validation-for="Year" class="text-danger"></span>
+    </div>
+    @if (File.Exists($"wwwroot/{ViewBag.Poster}"))
+    {
+        <div class="form-group">
+            <label>Current Poster: </label>
+            <img src="@ViewBag.Poster" width="200" height="200" style="object-fit: contain;" />
+        </div>
+    }
+    else
+    {
+        <h6>Poster not found. Please upload a new one.</h6>
+    }
+
+    <input type="hidden" class="form-control" value="@ViewBag.Poster" asp-for="ImageFileUrl" />
+
+    <div class="form-group">
+        <label>Upload image from computer</label>
+        <h6>Allowed file extensions: jpg, jpeg, png. Allowed file size: 10 mb</h6>
+        <input type="file" placeholder="Choose file" asp-for="ImageFile" id="file" />
+        <br />
+        <span asp-validation-for="ImageFile" class="text-danger"></span>
+        <span class="text-danger" id="fileValidationSpan"></span>
+    </div>
+
+    <div class="form-group">
+        <input asp-for="IdentityUserId" type="hidden" class="form-control" value="@ViewBag.LoggedUserId" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" id="submit-btn"/>
+    </div>
+</form>
+<div>
+    <a href="@ViewBag.returnUrl">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+   
+}
