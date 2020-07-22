@@ -149,7 +149,7 @@ namespace MoviesCatalog.Controllers
                 {
                     _context.Update(movie);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(Request.Headers["Referer"].ToString());
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
