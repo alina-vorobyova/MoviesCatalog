@@ -36,7 +36,7 @@
         <dd class="col-sm-10">
             @if (File.Exists($"wwwroot/{Model.Poster}"))
             {
-                <img src="@Model.Poster" alt="Poster" width="200" height="200">
+                <img src="@Model.Poster" alt="Poster" width="200" height="200" style="object-fit: cover;">
             }
             else
             {
